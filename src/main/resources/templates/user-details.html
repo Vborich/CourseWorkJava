@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:each="user : ${users}">
+    <p th:text="${user.getUsername()}"></p>
+    <a th:href="'/users/' + ${user.getId()} + '/remove'">Edit</a>
+    <form th:action="'/users/' + ${user.getId()} + '/remove'" method="post">
+        <button class="btn btn-outline-primary me-2" type="submit">Remove</button>
+    </form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+
+<body>
+
+<div layout:fragment="content">
+
+<div th:each="user : ${users}">
+    <p th:text="${user.getName()}"></p>
+    <a th:href="'/users/' + ${user.getId()}">Details</a>
+</div>
+
+<form action="/users/add" method="post">
+<input type="text" name="name">
+<button class="btn btn-outline-primary me-2" type="submit">Add</button>
+</form>
+</div>
+</body>
+</html>
