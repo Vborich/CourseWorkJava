@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<body>
+<div layout:fragment = "content">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" th:action="@{'/users/' + ${user.getId()} + '/edit'}">
+                    <div class="form-outline mb-4 mt-3">
+                        <label class="form-label" for="form3Example3">Имя пользователя</label>
+                        <input minlength="3" maxlength="30" name="username" th:value="${user.getUsername()}" required type="text" id="form3Example3" class="form-control form-control-lg"
+                               placeholder="Введите имя пользователя" />
+                    </div>
+
+                    <div class="form-outline mb-4 mt-3">
+                        <label class="form-label" for="form3Example1">Email</label>
+                        <input required type="email" id="form3Example1" th:value="${user.getEmail()}" name="email" class="form-control form-control-lg"
+                               placeholder="Введите email" />
+                    </div>
+
+                    <div class="form-outline mb-3">
+                        <label class="form-label" for="form3Example4">Пароль</label>
+                        <input minlength="5" maxlength="30" name="password" type="password" required id="form3Example4" class="form-control form-control-lg"
+                               placeholder="Введите пароль" />
+                    </div>
+
+                    <div class="form-outline mt-4">
+                        <input type="submit" class="btn btn-primary w-100" value="Cохранить"/>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
