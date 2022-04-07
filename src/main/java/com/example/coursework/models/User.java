@@ -9,7 +9,6 @@ import java.util.Set;
 
 @Entity
 public class User implements UserDetails {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -18,15 +17,17 @@ public class User implements UserDetails {
 
     private String password;
 
-    private  boolean active;
+    private boolean active;
 
     private String email;
+
+    private String avatarUrl;
+
+    private boolean emailConfirmed;
 
     private String activationCode;
 
     private String recoveringPasswordCode;
-
-    private String avatarUrl;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
@@ -42,6 +43,8 @@ public class User implements UserDetails {
         this.email = email;
         this.activationCode = activationCode;
         this.roles = roles;
+        this.emailConfirmed = false;
+        avatarUrl = "https://res.cloudinary.com/ds2evqh9b/image/upload/v1624311123/avatar7_gnqxpd.png";
     }
 
     public Long getId() {
@@ -86,7 +89,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return getActivationCode() == null;
+        return isEmailConfirmed();
     }
 
     public void setPassword(String password) {
@@ -139,5 +142,13 @@ public class User implements UserDetails {
 
     public void setRecoveringPasswordCode(String recoveringPasswordCode) {
         this.recoveringPasswordCode = recoveringPasswordCode;
+    }
+
+    public boolean isEmailConfirmed() {
+        return emailConfirmed;
+    }
+
+    public void setEmailConfirmed(boolean emailConfirmed) {
+        this.emailConfirmed = emailConfirmed;
     }
 }

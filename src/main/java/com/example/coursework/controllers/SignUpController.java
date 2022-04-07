@@ -29,7 +29,7 @@ public class SignUpController {
     @GetMapping("/sign-up")
     public  String signUp()
     {
-        return  "sign-up";
+        return "sign-up";
     }
 
     @PostMapping("/sign-up")
