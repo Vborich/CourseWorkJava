@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<body>
+<div layout:fragment = "content">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form th:action="@{/users/add}" th:object="${user}" method="post">
+                        <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+                            <h1 class="mx-auto">Добавление пользователя</h1>
+                        </div>
+
+                        <div class="form-outline mb-4 mt-3">
+                            <label class="form-label" for="form3Example3">Имя пользователя</label>
+                            <input type="text" th:field="*{username}" id="form3Example3" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('username') ? 'is-invalid' : ''}"
+                                   placeholder="Введите имя пользователя" />
+                            <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="form-outline mb-4 mt-3">
+                            <label class="form-label" for="form3Example1">Email</label>
+                            <input required th:field="*{email}" id="form3Example1" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : ''}"
+                                   placeholder="Введите email" />
+                            <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="invalid-feedback"></div>
+                        </div>
+
+                            <label>Роли: </label>
+                                <div th:each="role: ${roles}">
+                                    <input type="checkbox" th:field="*{roles}"
+                                           th:value="${role}" class="form-check-input" id="flexCheckDefault"/>
+                                    <label th:text="${role}" class="form-check-label" for="flexCheckDefault">
+                                    </label>
+                                </div>
+
+                        <div class="form-outline mt-3 mb-3">
+                            <label class="form-label" for="form3Example4">Пароль</label>
+                            <input type="password" th:field="*{password}" id="form3Example4" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('password') ? 'is-invalid' : ''}"
+                                   placeholder="Введите пароль" />
+                            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="form-outline mb-3">
+                            <label class="form-label" for="form3Example5">Повторный пароль</label>
+                            <input type="password" th:field="*{againPassword}"  id="form3Example5" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('againPassword') ? 'is-invalid' : ''}"
+                                   placeholder="Повторите пароль" />
+                            <div th:if="${#fields.hasErrors('againPassword')}" th:errors="*{againPassword}" class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="form-outline mt-4">
+                            <input type="submit" class="btn btn-primary w-100" value="Добавить"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

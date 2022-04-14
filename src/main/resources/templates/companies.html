@@ -13,7 +13,7 @@
         <div class="card-body">
             <div class="row justify-content-end">
                 <div class="row col-md-3 align-self-end">
-                <a href="/users/add" class="btn btn-outline-primary">Добавить пользователя</a>
+                    <a href="/companies/add" class="btn btn-outline-primary">Добавить компанию</a>
                 </div>
             </div>
             <div class="row" style="margin-top:15px">
@@ -21,30 +21,27 @@
                     <table class="table display nowrap" cellspacing="0" id="table" width="100%">
                         <thead>
                         <tr>
-                            <th>Имя</th>
-                            <th>Email</th>
-                            <th>Роли</th>
-                            <th>Статус</th>
+                            <th>Имя компании</th>
+                            <th>Центральный еmail</th>
+                            <th>Центральный номер телефона</th>
+                            <th>Адрес</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each = "user : ${users}">
+                        <tr th:each = "company : ${companies}">
                             <td>
-                                <a th:href="@{'/users/' + ${user.getId}}" th:text="${user.getUsername()}"></a>
+                                <a th:href="@{'/companies/' + ${company.getId()}}" th:text="${company.getCompanyName()}"></a>
                             </td>
-                            <td th:text="${user.getEmail()}"></td>
-                            <td th:text="${#strings.listJoin(user.getRoles(),',')}"></td>
-                            <td th:text="${user.isActive()} ? 'Активен' : 'Заблокирован'"></td>
+                            <td th:text="${company.getCentralEmail()}"></td>
+                            <td th:text="${company.getCentralPhoneNumber()}"></td>
+                            <td th:text="${company.getAddress().getAddress()}"></td>
                             <td>
-                                <div class="d-flex flex-row justify-content-between" th:if="${!#strings.listJoin(user.getRoles(),',').contains('Admin')}">
-                                    <form th:action="@{'/users/' + ${user.getId} + '/changeStatus'}" method="post">
-                                        <button type="submit" style="margin-top:5px;width:40px" class="btn btn-outline-primary "><i class="fa" th:classappend="${user.isActive() ? 'fa-lock' : 'fa-unlock'}"></i></button>
-                                    </form>
-                                    <form th:action="@{'/users/' + ${user.getId} + '/remove'}" method="post">
+                                <div class="d-flex flex-row">
+                                    <form th:action="@{'/companies/' + ${company.getId()} + '/remove'}" method="post">
                                         <button type="submit" style="margin-top:5px;width:40px" class="btn btn-outline-primary "><i class="fa fa-trash-alt"></i></button>
                                     </form>
-                                        <a th:href="@{'/users/' + ${user.getId} + '/edit'}"  style="margin-top:5px;width:40px" class="btn btn-outline-primary "><i class="fa fa-pen"></i></a>
+                                    <a th:href="@{'/companies/' + ${company.getId()} + '/edit'}"  style="margin-top:5px;width:40px; margin-left: 5px" class="btn btn-outline-primary "><i class="fa fa-pen"></i></a>
                                 </div>
                             </td>
                         </tr>

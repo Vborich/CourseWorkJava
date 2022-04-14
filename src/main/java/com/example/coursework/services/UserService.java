@@ -15,8 +15,9 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -35,7 +36,7 @@ public class UserService implements UserDetailsService {
     @Autowired
     HttpServletRequest httpServletRequest;
 
-    public String getContextPath()
+    private String getContextPath()
     {
         String port = String.valueOf(httpServletRequest.getLocalPort());
         return httpServletRequest.getRequestURL().toString().split(port)[0] + port;
@@ -48,15 +49,19 @@ public class UserService implements UserDetailsService {
 
     public StatusEnum addUser(UserDto userDto)
     {
+        if (userDto.getRoles() == null || userDto.getRoles().isEmpty())
+            return  StatusEnum.BadRoles;
+
         User user = userRepository.findByUsername(userDto.getUsername());
         if (user != null)
             return StatusEnum.BadName;
+
         user = userRepository.findByEmail(userDto.getEmail());
         if (user != null && user.isEmailConfirmed())
             return StatusEnum.BadEmail;
 
         User addedUser = new User(userDto.getUsername(), passwordEncoder.encode(userDto.getPassword()), true,
-                userDto.getEmail(), UUID.randomUUID().toString(), Collections.singleton(Role.User));
+                userDto.getEmail(), UUID.randomUUID().toString(), userDto.getRoles());
         if (user != null)
             addedUser.setId(user.getId());
         userRepository.save(addedUser);
@@ -114,6 +119,7 @@ public class UserService implements UserDetailsService {
     public boolean uploadAvatar(long id, String image) throws IOException {
         if (!userRepository.existsById(id))
             return false;
+
         User user = userRepository.findById(id).get();
         var url = cloudinaryService.uploadImage(image);
         if (url != "")
@@ -139,7 +145,11 @@ public class UserService implements UserDetailsService {
         if (userByEmail != null && userByEmail.getId() != user.getId())
             return StatusEnum.BadEmail;
 
+        if (user.getRoles() == null || user.getRoles().isEmpty())
+            return StatusEnum.BadRoles;
+
         userDb.setUsername(user.getUsername());
+        userDb.setRoles(user.getRoles());
         userDb.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(userDb);
 
@@ -162,6 +172,47 @@ public class UserService implements UserDetailsService {
 
         user.setActivationCode(null);
         user.setEmail(email);
+        userRepository.save(user);
+        return true;
+    }
+
+    public Iterable<User> getUsers()
+    {
+        return userRepository.findAll();
+    }
+
+    public boolean changeUserStatus(long id)
+    {
+        User user = getUserById(id);
+        if(user == null)
+            return  false;
+
+        user.setActive(!user.isActive());
+        userRepository.save(user);
+        return true;
+    }
+
+    public boolean removeUser(long id)
+    {
+        if (getUserById(id) == null)
+            return  false;
+
+        userRepository.deleteById(id);
+        return true;
+    }
+
+    public Iterable<User> getUsersWithoutCompany()
+    {
+        return ((List<User>)userRepository.findAll()).stream().filter(user-> user.getCompany() == null && user.getRoles().stream().anyMatch(role -> role == Role.User)).collect(Collectors.toList());
+    }
+
+    public boolean removeUserFromCompany(long id)
+    {
+        User user = getUserById(id);
+        if (user == null)
+            return false;
+
+        user.setCompany(null);
         userRepository.save(user);
         return true;
     }

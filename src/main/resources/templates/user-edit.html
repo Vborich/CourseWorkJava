@@ -21,7 +21,25 @@
                                placeholder="Введите email" />
                     </div>
 
-                    <div class="form-outline mb-3">
+                        <div th:if="${#strings.listJoin(#authentication.getAuthorities(),',').contains('Admin') && user.getId() != #authentication.principal.id}" >
+                            <label>Роли: </label>
+                            <div th:each = "role: ${roles}">
+                                <input type="checkbox" name="roles" th:attr="checked=${user.getRoles().contains(role) ? 'checked' : null}"
+                                       th:value="${role}" class="form-check-input" id="flexCheckDefault"/>
+                                <label th:text="${role}" class="form-check-label" for="flexCheckDefault">
+                                </label>
+                            </div>
+                        </div>
+                        <div th:if="${user.getId() == #authentication.principal.id}" hidden>
+                            <div th:each = "role: ${roles}">
+                                <input type="checkbox" name="roles" th:attr="checked=${user.getRoles().contains(role) ? 'checked' : null}"
+                                       th:value="${role}" class="form-check-input" id="flexCheckDefault"/>
+                                <label th:text="${role}" class="form-check-label" for="flexCheckDefault">
+                                </label>
+                            </div>
+                        </div>
+
+                    <div class="form-outline mb-3 mt-3">
                         <label class="form-label" for="form3Example4">Пароль</label>
                         <input minlength="5" maxlength="30" name="password" type="password" required id="form3Example4" class="form-control form-control-lg"
                                placeholder="Введите пароль" />

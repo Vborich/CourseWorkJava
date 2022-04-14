@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<body>
+<div layout:fragment = "content">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form th:action="@{'/companies/' + ${company.getId()} + '/edit'}" th:object="${company}" method="post">
+                        <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+                            <h1 class="mx-auto">Изменение данных компании</h1>
+                        </div>
+
+                        <div class="form-outline mb-4 mt-3">
+                            <label class="form-label" for="form3Example3">Имя компании</label>
+                            <input type="text" th:field="*{companyName}" id="form3Example3" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('companyName') ? 'is-invalid' : ''}"
+                                   placeholder="Введите имя компании" />
+                            <div th:if="${#fields.hasErrors('companyName')}" th:errors="*{companyName}" class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="form-outline mb-4 mt-3">
+                            <label class="form-label" for="form3Example1">Центральный email</label>
+                            <input required th:field="*{centralEmail}" id="form3Example1" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('centralEmail') ? 'is-invalid' : ''}"
+                                   placeholder="Введите центральный email" />
+                            <div th:if="${#fields.hasErrors('centralEmail')}" th:errors="*{centralEmail}" class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="form-outline mt-3 mb-3">
+                            <label class="form-label" for="form3Example4">Центральный номер телефона</label>
+                            <input maxlength="9" type="tel" th:field="*{centralPhoneNumber}" id="form3Example4" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('centralPhoneNumber') ? 'is-invalid' : ''}"
+                                   placeholder="Введите центральный номер телефона" />
+                            <div th:if="${#fields.hasErrors('centralPhoneNumber')}" th:errors="*{centralPhoneNumber}" class="invalid-feedback"></div>
+                        </div>
+
+                        <h3>Адрес</h3>
+                        <div class="form-outline mb-3 mt-3">
+                            <label class="form-label" for="form3Example5">Страна</label>
+                            <input th:field="*{country}"  id="form3Example5" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('country') ? 'is-invalid' : ''}"
+                                   placeholder="Введите страну" />
+                            <div th:if="${#fields.hasErrors('country')}" th:errors="*{country}" class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="form-outline mb-3">
+                            <label class="form-label" for="form3Example6">Город</label>
+                            <input th:field="*{city}"  id="form3Example6" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('city') ? 'is-invalid' : ''}"
+                                   placeholder="Введите город" />
+                            <div th:if="${#fields.hasErrors('city')}" th:errors="*{city}" class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="form-outline mb-3">
+                            <label class="form-label" for="form3Example7">Улица</label>
+                            <input th:field="*{street}"  id="form3Example7" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('street') ? 'is-invalid' : ''}"
+                                   placeholder="Введите улицу" />
+                            <div th:if="${#fields.hasErrors('street')}" th:errors="*{street}" class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="form-outline mb-3">
+                            <label class="form-label" for="form3Example8">Дом</label>
+                            <input th:field="*{building}"  id="form3Example8" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('building') ? 'is-invalid' : ''}"
+                                   placeholder="Введите дом" />
+                            <div th:if="${#fields.hasErrors('building')}" th:errors="*{building}" class="invalid-feedback"></div>
+                        </div>
+
+
+                        <div class="form-outline mt-4">
+                            <input type="submit" class="btn btn-primary w-100" value="Сохранить"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

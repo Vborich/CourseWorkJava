@@ -11,6 +11,7 @@ import java.util.Set;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
 
     private String username;
@@ -33,6 +34,13 @@ public class User implements UserDetails {
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="company_id", nullable = true)
+    private Company company;
+
+    @OneToOne(mappedBy = "userOwner", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private Company ownCompany;
 
     public User(){}
 
@@ -150,5 +158,21 @@ public class User implements UserDetails {
 
     public void setEmailConfirmed(boolean emailConfirmed) {
         this.emailConfirmed = emailConfirmed;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public Company getOwnCompany() {
+        return ownCompany;
+    }
+
+    public void setOwnCompany(Company ownCompany) {
+        this.ownCompany = ownCompany;
     }
 }

@@ -49,14 +49,23 @@
                                 <p th:text="${#strings.listJoin(user.getRoles(),',')}"></p>
                             </div>
                         </div>
-                        <div class="row col-md-5 ms-1 me-1">
+                        <hr>
+                        <div th:if="${user.getCompany() != null}" class="row">
+                            <div class="col-md-2">
+                                <h6 class="mb-0">Компания</h6>
+                            </div>
+                            <div class="col-md-10 ">
+                                <a th:href="@{'/companies/' + ${user.getCompany().getId()}}" th:text="${user.getCompany().getCompanyName()}"></a>
+                            </div>
+                        </div>
+                        <div th:if="${user.getId() == #authentication.principal.id || (!#strings.listJoin(user.getRoles(),',').contains('Admin') && #strings.listJoin(#authentication.getAuthorities(),',').contains('Admin'))}" class="row col-md-5 ms-1 me-1 mt-3">
                             <a th:href="@{'/users/' + ${user.getId()} + '/edit'}" class="btn btn-outline-primary">Редактировать</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-12 align-middle mt-3">
+        <div class="col-md-12 align-middle mt-3" th:if="${user.getId() == #authentication.principal.id || (!#strings.listJoin(user.getRoles(),',').contains('Admin') && #strings.listJoin(#authentication.getAuthorities(),',').contains('Admin'))}">
             <div class="card">
                 <div class="card-body">
                     <div class="form-group">

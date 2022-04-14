@@ -1,6 +1,7 @@
 package com.example.coursework.controllers;
 
 import com.example.coursework.dto.UserDto;
+import com.example.coursework.models.Role;
 import com.example.coursework.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.Collections;
 
 @Controller
 public class SignUpController {
@@ -40,6 +42,7 @@ public class SignUpController {
         if (bindingResult.hasErrors())
             return "sign-up";
 
+        userDto.setRoles(Collections.singleton(Role.Admin));
         switch (userService.addUser(userDto)) {
             case BadName:
                 model.addAttribute("toast", "Имя пользователя занято");
