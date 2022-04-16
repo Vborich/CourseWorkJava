@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<body>
+<div layout:fragment = "content">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form th:action="@{'/advertisings/' + ${id} + '/subtypes/add'}" th:object="${advertisingSubtype}" method="post">
+                        <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+                            <h1 class="mx-auto">Добавление типа рекламы</h1>
+                        </div>
+
+                        <div class="form-outline mb-4 mt-3">
+                            <label class="form-label" for="form3Example3">Вид рекламы</label>
+                            <input th:value="*{typeAdvertising}" type="text" th:field="*{typeAdvertising}" id="form3Example3" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('typeAdvertising') ? 'is-invalid' : ''}"
+                                   placeholder="Введите вид рекламы" />
+                            <div th:if="${#fields.hasErrors('typeAdvertising')}" th:errors="*{typeAdvertising}" class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="form-outline mb-4 mt-3">
+                            <label class="form-label" for="form3Example1">Единица измерения</label>
+                            <input th:value="*{unit}" th:field="*{unit}" id="form3Example1" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('unit') ? 'is-invalid' : ''}"
+                                      placeholder="Введите единицу измерения" />
+                            <div th:if="${#fields.hasErrors('unit')}" th:errors="*{unit}" class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="form-outline mb-4 mt-3">
+                            <label class="form-label" for="form3Example2">Цена</label>
+                            <input required type="number" step="0.01" min="1" th:value="*{price}" th:field="*{price}" id="form3Example2" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('price') ? 'is-invalid' : ''}"
+                                   placeholder="Введите цену" />
+                            <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="form-outline mt-4">
+                            <input type="submit" class="btn btn-primary w-100" value="Добавить"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

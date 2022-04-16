@@ -25,7 +25,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
              http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "/sign-up", "/check-email-box", "/activate/{code}", "/forget-password",
-                        "/recover-password/{code}", "/check-email-box-recover-password", "/recover-password")
+                        "/recover-password/{code}", "/check-email-box-recover-password", "/recover-password",
+                        "/view-advertising/{id}")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()

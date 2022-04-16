@@ -193,11 +193,6 @@ public class CompanyController {
         return "redirect:/companies/" + companyId;
     }
 
-    @ModelAttribute("company")
-    public CompanyDto companyDto() {
-        return new CompanyDto();
-    }
-
     @GetMapping("/companies/create")
     public String createCompany(Model model) {
         model.addAttribute("action", "create");
@@ -220,5 +215,10 @@ public class CompanyController {
         user.setCompany(userService.getUserById(user.getId()).getCompany());
         redirectAttributes.addFlashAttribute("toast", "Компания успешно добавлена");
         return "redirect:/companies/" + user.getCompany().getId();
+    }
+
+    @ModelAttribute("company")
+    public CompanyDto companyDto() {
+        return new CompanyDto();
     }
 }

@@ -8,9 +8,6 @@ import com.example.coursework.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Set;
-
 @Service
 public class CompanyService {
     @Autowired

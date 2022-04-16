@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<body>
+<div layout:fragment = "content">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form th:action="@{'/advertisings/' + ${advertising.getId()} + '/edit'}" th:object="${advertising}" method="post">
+                        <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+                            <h1 class="mx-auto">Изменение данных рекламы</h1>
+                        </div>
+
+                        <div class="form-outline mb-4 mt-3">
+                            <label class="form-label" for="form3Example3">Название рекламы</label>
+                            <input th:value="*{advertisingName}" type="text" th:field="*{advertisingName}" id="form3Example3" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('advertisingName') ? 'is-invalid' : ''}"
+                                   placeholder="Введите название рекламы" />
+                            <div th:if="${#fields.hasErrors('advertisingName')}" th:errors="*{advertisingName}" class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="form-outline mb-4 mt-3">
+                            <label class="form-label" for="form3Example1">Описание</label>
+                            <textarea th:value="*{description}" th:field="*{description}" id="form3Example1" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('description') ? 'is-invalid' : ''}"
+                                      placeholder="Введите описание" />
+                            <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="form-outline mt-4">
+                            <input type="submit" class="btn btn-primary w-100" value="Сохранить"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

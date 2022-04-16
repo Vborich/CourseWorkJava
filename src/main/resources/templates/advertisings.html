@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<body>
+<div layout:fragment = "content">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
+
+    <div class="card mx-2" style="margin-top:20px">
+        <div class="card-body">
+            <div class="row justify-content-end">
+                <div class="row col-md-3 align-self-end">
+                    <a href="/advertisings/add" class="btn btn-outline-primary">Добавить рекламу</a>
+                </div>
+            </div>
+            <div class="row" style="margin-top:15px">
+                <div class="col-md-12">
+                    <table class="table display nowrap" cellspacing="0" id="table" width="100%">
+                        <thead>
+                        <tr>
+                            <th>Название рекламы</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each = "advertising : ${advertisings}">
+                            <td>
+                                <a th:href="@{'/advertisings/' + ${advertising.getId()}}" th:text="${advertising.getAdvertisingName()}"></a>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-row">
+                                    <form th:action="@{'/advertisings/' + ${advertising.getId()} + '/remove'}" method="post">
+                                        <button type="submit" style="margin-top:5px;width:40px" class="btn btn-outline-primary "><i class="fa fa-trash-alt"></i></button>
+                                    </form>
+                                    <a th:href="@{'/advertisings/' + ${advertising.getId()} + '/edit'}"  style="margin-top:5px;width:40px; margin-left: 5px" class="btn btn-outline-primary "><i class="fa fa-pen"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap5.min.js"></script>
+<script src="js/table.js"></script>

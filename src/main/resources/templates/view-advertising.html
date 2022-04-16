@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<body>
+<div layout:fragment = "content">
+    <div class="container" style="margin-top:30px">
+        <h2 class="pb-2 border-bottom" th:text="${advertising.getAdvertisingName()}"></h2>
+        <p th:text="${advertising.getDescription()}" class="lead"></p>
+        <div th:if="${!advertising.getAdvertisingSubtypes().isEmpty()}" id="types" >
+            <h2 class="mt-3 pb-2 border-bottom">Типы рекламы</h2>
+            <input class="mt-2 search form-control" placeholder="Поиск" />
+        <ul style="list-style: none; padding: 0;" class="mt-2 list row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <li style=" list-style-type: none;" th:each = "advertisingType : ${advertising.getAdvertisingSubtypes()}" class="col">
+                <div class="card shadow-sm">
+                    <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill-opacity="1" fill="rgb(2, 117, 216)"></rect><text class="name" th:text ="${advertisingType.getTypeAdvertising()}" fill="white"  x="50%" y="50%"  text-anchor="middle" dy=".3em"></text></svg>
+                    <div class="card-body">
+                        <p class="card-text price" th:text="@{'Цена: ' + ${advertisingType.getPrice()} + '$ за ' + ${advertisingType.getUnit()}}"></p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a th:if="${#authorization.expression('hasAuthority(''User'')')}"  th:href="@{'/view-advertising/' + ${advertising.getId()}}" type="button" class="btn btn-primary">Заказать</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
+<script>
+    var options = {
+        valueNames: [ 'name', 'price' ]
+    };
+
+    var typesList = new List('types', options);
+</script>

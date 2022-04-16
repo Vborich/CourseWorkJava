@@ -1,14 +1,27 @@
-<!DOCTYPE HTML>
-<html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+<!DOCTYPE html>
+<html lang="en"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{_layout}">
 <body>
 <div layout:fragment = "content">
-<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
-<p th:text="'Hello, ' + ${title} + '!'" />
+    <div class="container">
+        <h2 class="pb-2 border-bottom">Рекламы</h2>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <div th:each = "advertising : ${advertisings}" class="col">
+                <div class="card shadow-sm">
+                    <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill-opacity="1" fill="rgb(2, 117, 216)"></rect><text th:text ="${advertising.getAdvertisingName()}" fill="white"  x="50%" y="50%"  text-anchor="middle" dy=".3em"></text></svg>
+                    <div class="card-body">
+                        <p class="card-text" th:text="${advertising.getDescription()}"></p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a th:href="@{'/view-advertising/' + ${advertising.getId()}}" type="button" class="btn btn-primary">Просмотреть</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 </body>
 </html>
