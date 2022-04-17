@@ -206,6 +206,11 @@ public class UserService implements UserDetailsService {
         return ((List<User>)userRepository.findAll()).stream().filter(user-> user.getCompany() == null && user.getRoles().stream().anyMatch(role -> role == Role.User)).collect(Collectors.toList());
     }
 
+    public Iterable<User> getUsersWithUserRole()
+    {
+        return ((List<User>)userRepository.findAll()).stream().filter(user-> user.getRoles().stream().anyMatch(role -> role == Role.User)).collect(Collectors.toList());
+    }
+
     public boolean removeUserFromCompany(long id)
     {
         User user = getUserById(id);

@@ -34,7 +34,7 @@
                 </a>
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="/" class="nav-link px-2 link-secondary">Рекламы</a></li>
+                    <li><a href="/" class="nav-link px-2 link">Рекламы</a></li>
                 </ul>
 
                 <div class="dropdown text-end">
@@ -51,7 +51,8 @@
                         <li sec:authorize="hasAuthority('Admin')" ><a class="dropdown-item" href="/users">Пользователи</a></li>
                         <li sec:authorize="hasAuthority('Admin')" ><a class="dropdown-item" href="/companies">Компании</a></li>
                         <li sec:authorize="hasAuthority('Admin')" ><a class="dropdown-item" href="/advertisings">Рекламы</a></li>
-                        <li><a class="dropdown-item" href="#">.....</a></li>
+                        <li sec:authorize="hasAuthority('User')" ><a class="dropdown-item" href="/my-orders">Мои заказы</a></li>
+                        <li sec:authorize="hasAuthority('Admin')" ><a class="dropdown-item" href="/orders">Заказы</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <a th:href="@{/logout}" class="dropdown-item"> Выйти </a>

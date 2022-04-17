@@ -42,6 +42,9 @@ public class User implements UserDetails {
     @OneToOne(mappedBy = "userOwner", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Company ownCompany;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Order> orders;
+
     public User(){}
 
     public User(String username, String password, boolean active, String email, String activationCode, Set<Role> roles) {
@@ -174,5 +177,13 @@ public class User implements UserDetails {
 
     public void setOwnCompany(Company ownCompany) {
         this.ownCompany = ownCompany;
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 }

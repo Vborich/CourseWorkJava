@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<body>
+<div layout:fragment = "content">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+                        <h1 class="mx-auto">Оформление заказа</h1>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h6 class="mb-0">Тип рекламы</h6>
+                        </div>
+                        <div class="col-md-8">
+                            <p th:text="${advertising.getTypeAdvertising()}" ></p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h6 class="mb-0">Единица измерения</h6>
+                        </div>
+                        <div class="col-md-8">
+                            <p th:text="${advertising.getUnit()}" ></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h6 class="mb-0">Цена</h6>
+                        </div>
+                        <div class="col-md-8">
+                            <p id="price" th:text= "@{${advertising.getPrice()} + ' $'}" ></p>
+                        </div>
+                    </div>
+                    <hr>
+                    <form th:action="@{'/advertising-subtypes/' + ${advertising.getId()} + '/orders/add'}"  method="post">
+                        <div class="form-outline mb-4 mt-3">
+                            <label class="form-label" for="count">Кол-во ед. измерения</label>
+                            <input id="count" name="countUnits" required type="number" step="1" min="1"  max="10000000" class="form-control form-control-lg" placeholder="Введите кол-во ед. измерения" />
+                        </div>
+
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h6 class="mb-0">Общая стоимость</h6>
+                            </div>
+                            <div class="col-md-8">
+                                <p id="total"></p>
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class="form-outline mt-4">
+                            <input type="submit" class="btn btn-primary w-100" value="Оформить"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<script>
+    var input = document.getElementById('count');
+    var price = parseInt(document.getElementById('price').textContent);
+
+    input.oninput = function(evt) {
+        document.getElementById('total').innerHTML = input.value * price + " $";
+    };
+
+</script>

@@ -17,7 +17,7 @@ import java.util.Comparator;
 import java.util.Optional;
 
 @Controller
-public class MainController {
+public class HomeController {
 
     @Autowired
     AdvertisingService advertisingService;

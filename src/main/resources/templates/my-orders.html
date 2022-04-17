@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<body>
+<div layout:fragment = "content">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
+
+    <div class="card mx-2" style="margin-top:20px">
+        <div class="card-body">
+            <h1>Мои заказы</h1>
+            <div class="row" style="margin-top:15px">
+                <div class="col-md-12">
+                    <table class="table display nowrap" cellspacing="0" id="table" width="100%">
+                        <thead>
+                        <tr>
+                            <th>Номер заказа</th>
+                            <th>Тип рекламы</th>
+                            <th>Дата заказа</th>
+                            <th>Дата подтверждения</th>
+                            <th>Статус</th>
+                            <th>Общая стоимость</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each = "order : ${orders}">
+                            <td>
+                                <a th:href="@{'/orders/' + ${order.getId()}}" th:text="${order.getId()}"></a>
+                            </td>
+                            <td th:text="${order.getAdvertisingSubtype().getTypeAdvertising()}">
+                            <td th:text="${#dates.format(order.getOrderDate(), 'dd-MM-yyyy HH:mm')}" ></td>
+                            <td th:text="${#dates.format(order.getConfirmationDate(), 'dd-MM-yyyy HH:mm')}" ></td>
+                            <td th:switch="${order.getStatus()}">
+                                <span th:case="'0'">В обработке</span>
+                                <span th:case="'1'">Принят</span>
+                                <span th:case="'-1'">Отменен</span>
+                            </td>
+                            <td th:text="@{${order.getTotalPrice()} + ' $'}"></td>
+                            <td>
+                                <div th:if="${order.getStatus() == 0}"  class="d-flex flex-row">
+                                    <form th:action="@{'/orders/' + ${order.getId()} + '/cancel'}" method="post">
+                                        <button type="submit" style="margin-top:5px;width:40px" class="btn btn-outline-primary "><i class="fa fa-ban"></i></button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap5.min.js"></script>
+<script src="js/table.js"></script>

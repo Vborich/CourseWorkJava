@@ -1,6 +1,7 @@
 package com.example.coursework.models;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class AdvertisingSubtype {
@@ -18,6 +19,9 @@ public class AdvertisingSubtype {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="advertising_id", nullable = false)
     private Advertising advertising;
+
+    @OneToMany(mappedBy = "advertisingSubtype", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Order> orders;
 
     public Long getId() {
         return id;
@@ -57,5 +61,13 @@ public class AdvertisingSubtype {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 }

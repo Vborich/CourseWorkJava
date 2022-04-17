@@ -27,6 +27,9 @@ public class Company {
     @JoinColumn(name = "user_owner_id", referencedColumnName = "id")
     private User userOwner;
 
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Order> orders;
+
     @PreRemove
     private void preRemove() {
         users.forEach( user -> user.setCompany(null));
@@ -86,5 +89,13 @@ public class Company {
 
     public void setUserOwner(User userOwner) {
         this.userOwner = userOwner;
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 }
