@@ -18,6 +18,7 @@
                         <thead>
                         <tr>
                             <th>Номер заказа</th>
+                            <th>Реклама</th>
                             <th>Тип рекламы</th>
                             <th>Дата заказа</th>
                             <th>Дата подтверждения</th>
@@ -30,6 +31,9 @@
                         <tr th:each = "order : ${orders}">
                             <td>
                                 <a th:href="@{'/orders/' + ${order.getId()}}" th:text="${order.getId()}"></a>
+                            </td>
+                            <td>
+                                <a th:href="@{'/view-advertising/' + ${order.getAdvertisingSubtype().getAdvertising().getId()}}" th:text="${order.getAdvertisingSubtype().getAdvertising().getAdvertisingName()}"></a>
                             </td>
                             <td th:text="${order.getAdvertisingSubtype().getTypeAdvertising()}">
                             <td th:text="${#dates.format(order.getOrderDate(), 'dd-MM-yyyy HH:mm')}" ></td>

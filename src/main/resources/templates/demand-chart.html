@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<body>
+<div layout:fragment = "content">
+
+<div class="container">
+    <div class="row g-3">
+        <div class="col-md-3">
+            <form id="form">
+            <div class="mb-3">
+                <label for="date1" class="form-label">Введите начало периода</label>
+                <input required type="date" class="form-control" id="date1">
+            </div>
+            <div class="mb-3">
+                <label for="date2" class="form-label">Введите конец периода</label>
+                <input required type="date" class="form-control" id="date2">
+            </div>
+            <div class="form-outline mt-4">
+                <input type="submit" class="btn btn-primary w-100" value="Построить"/>
+            </div>
+            </form>
+        </div>
+        <div class="col-md-9">
+            <div>
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+    var myChart = new Chart(
+        document.getElementById('myChart'),
+    );
+
+    $('#form').on('submit', function(e) {
+        e.preventDefault();
+        buildChart();
+    });
+
+    function buildChart() {
+        $.ajax({
+            type: "GET",
+            data: {"startDate": $('#date1').val(), "endDate" : $('#date2').val()},
+            dataType: 'json',
+            url: window.location.origin + '/demand-chart-get-values',
+            success: function (demandAdvertisings) {
+
+                var labels = [];
+                var dataValues = [];
+                demandAdvertisings.forEach(function(advertising){
+                    labels.push(advertising.advertising);
+                    dataValues.push(advertising.value);
+                })
+
+                var data = {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Количество',
+                        data: dataValues,
+                        backgroundColor: 'rgb(2, 117, 216)',
+                        borderWidth: 1
+                    }]
+                };
+
+                var config = {
+                    type: 'bar',
+                    data: data,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    },
+                };
+
+                myChart.destroy();
+                myChart = new Chart(
+                    document.getElementById('myChart'),
+                    config
+                );
+
+                $("#toastText").text("Диаграмма успешно построена");
+                $("#myToast").toast("show");
+            },
+            error: function () {
+                $("#toastText").text("Произошла ошибка при построении диаграммы");
+                $("#myToast").toast("show");
+            }
+        });
+    }
+</script>

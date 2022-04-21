@@ -5,7 +5,7 @@ $("#uploadAvatar").on('click', function (ev) {
     }).then(function (image) {
         $.ajax({
             type: "POST",
-            url: 'http://localhost:8080/users/'+ userId +'/uploadAvatar',
+            url: window.location.origin +'/users/'+ userId +'/uploadAvatar',
             data: { 'image': image },
             success: function (data) {
                 if (data == "error") {
@@ -14,10 +14,10 @@ $("#uploadAvatar").on('click', function (ev) {
                     boxZone.empty();
                     boxZone.append('<div class="border-0 bg-white" style="margin-top:15px;"><span style="color:red;">Произошла ошибка загрузки картинки</span></div>');
                 }
-                else window.location.href = 'http://localhost:8080/users/' + userId;
+                else window.location.href = window.location.origin +'/users/' + userId;
             },
             error: function (data) {
-                window.location.href = 'http://localhost:8080/users/' + userId;
+                window.location.href = window.location.origin + '/users/' + userId;
             }
         });
     });

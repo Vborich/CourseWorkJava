@@ -41,6 +41,14 @@
                         <hr>
                         <div class="row">
                             <div class="col-md-2">
+                                <h6 class="mb-0">Рекламы</h6>
+                            </div>
+                            <div class="col-md-10 ">
+                                <a th:href="@{'/view-advertising/' + ${order.getAdvertisingSubtype().getAdvertising().getId()}}" th:text="${order.getAdvertisingSubtype().getAdvertising().getAdvertisingName()}"></a>
+                            </div>
+                        </div>
+                        <div class="mt-3 row">
+                            <div class="col-md-2">
                                 <h6 class="mb-0">Тип рекламы</h6>
                             </div>
                             <div class="col-md-10 ">

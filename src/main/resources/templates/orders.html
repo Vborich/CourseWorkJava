@@ -11,13 +11,14 @@
 
     <div class="card mx-2" style="margin-top:20px">
         <div class="card-body">
-            <h1>Мои заказы</h1>
+            <h1>Заказы</h1>
             <div class="row" style="margin-top:15px">
                 <div class="col-md-12">
                     <table class="table display nowrap" cellspacing="0" id="table" width="100%">
                         <thead>
                         <tr>
                             <th>Номер заказа</th>
+                            <th>Реклама</th>
                             <th>Тип рекламы</th>
                             <th>Заказчик</th>
                             <th>Компания</th>
@@ -32,6 +33,9 @@
                         <tr th:each = "order : ${orders}">
                             <td>
                                 <a th:href="@{'/orders/' + ${order.getId()}}" th:text="${order.getId()}"></a>
+                            </td>
+                            <td>
+                                <a th:href="@{'/advertisings/' + ${order.getAdvertisingSubtype().getAdvertising().getId()}}" th:text="${order.getAdvertisingSubtype().getAdvertising().getAdvertisingName()}"></a>
                             </td>
                             <td th:text="${order.getAdvertisingSubtype().getTypeAdvertising()}">
                             <td>
