@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<body>
+<div layout:fragment = "content">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                        <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+                            <h1 class="mx-auto">Cоздание отчета выручки реклам за период</h1>
+                        </div>
+
+                    <form class="mt-2" id="form">
+                        <div class="mb-3">
+                            <label for="date1" class="form-label">Введите начало периода</label>
+                            <input required type="date" class="form-control" id="date1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="date2" class="form-label">Введите конец периода</label>
+                            <input required type="date" class="form-control" id="date2">
+                        </div>
+                        <div class="form-outline mt-4">
+                            <input type="submit" class="btn btn-primary w-100" value="Создать pdf отчет"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<script th:inline="javascript">
+    var username = [[${#authentication.principal.username}]];
+</script>
+<script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+<script>
+    $('#form').on('submit', function(e) {
+        e.preventDefault();
+        buildReport();
+    });
+
+    function buildReport() {
+        $.ajax({
+            type: "GET",
+            data: {"startDate": $('#date1').val(), "endDate" : $('#date2').val()},
+            dataType: 'json',
+            url: window.location.origin + '/income-report-data',
+            success: function (reportData) {
+
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                doc.addFont("/fonts/PT_Sans-Web-Regular.ttf", "PTSans", "normal");
+                doc.setFont("PTSans");
+                doc.setFontSize(14);
+
+                doc.text("Отчет выручки реклам за определенный период", 105, 25, null, null, "center");
+
+                doc.text("Начало периода: " + $('#date1').val(), 20, 40);
+                doc.text("Конец периода: " + $('#date2').val(), 20, 50);
+
+                var columns = ["Тип рекламы", "Количество", "Общая выручка"];
+                var rows = [];
+                reportData.forEach(function(advertising){
+                    rows.push([advertising.advertising, advertising.count, advertising.totalIncome + '$']);
+                })
+                doc.autoTable(columns, rows, {styles: {font: "PTSans"}, margin : { top : 60 }	});
+                let finalY = doc.lastAutoTable.finalY;
+
+                var today = new Date();
+                var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                doc.text("Дата формирования отчета: " + date, 20, finalY + 10);
+
+                doc.text("Отчет сформирован: ", 200, finalY + 10, null, null, "right");
+                doc.text(username, 200, finalY + 20, null, null, "right");
+
+                window.open(URL.createObjectURL(doc.output("blob")))
+
+                $("#toastText").text("Отчет успешно сформирован");
+                $("#myToast").toast("show");
+            },
+            error: function () {
+                $("#toastText").text("Произошла ошибка при формировании отчета");
+                $("#myToast").toast("show");
+            }
+        });
+    }
+</script>

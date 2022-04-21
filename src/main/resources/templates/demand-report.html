@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<body>
+<div layout:fragment = "content">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+                        <h1 class="mx-auto">Отчет востребованности реклам за квартал</h1>
+                    </div>
+                    <form class="mt-2" id="form">
+                        <div class="mb-3">
+                            <label for="year" class="form-label">Введите год</label>
+                            <input required type="number" step="1" min="2022" max="100000" class="form-control" id="year">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="quarter" class="form-label">Выберите квартал</label>
+                        <select class="form-select" id="quarter">
+                            <option value="1" selected>I Квартал</option>
+                            <option value="2">II Квартал</option>
+                            <option value="3">III Квартал</option>
+                            <option value="4">IV Квартал</option>
+                        </select>
+                        </div>
+
+                        <div class="form-outline mt-4">
+                            <input type="submit" class="btn btn-primary w-100" value="Создать pdf отчет"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<script th:inline="javascript">
+    var username = [[${#authentication.principal.username}]];
+</script>
+<script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+<script>
+    $('#form').on('submit', function(e) {
+        e.preventDefault();
+        buildReport();
+    });
+
+    function buildReport() {
+        $.ajax({
+            type: "GET",
+            data: {"year": $('#year').val(), "quarter" : $('#quarter').val()},
+            dataType: 'json',
+            url: window.location.origin + '/demand-report-data',
+            success: function (reportData) {
+
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                doc.addFont("/fonts/PT_Sans-Web-Regular.ttf", "PTSans", "normal");
+                doc.setFont("PTSans");
+                doc.setFontSize(14);
+
+                doc.text("Отчет востребованности реклам за квартал", 105, 25, null, null, "center");
+
+                doc.text("Год: " + $('#year').val(), 20, 40);
+                doc.text("Квартал: " + $('#quarter').val(), 20, 50);
+
+                var columns = ["Тип рекламы"];
+                switch ($('#quarter').val())
+                {
+                    case '1': columns.push("Январь", "Февраль", "Март"); break;
+                    case '2': columns.push("Апрель", "Май", "Июнь"); break;
+                    case '3': columns.push("Июль", "Август", "Сентябрь"); break;
+                    case '4': columns.push("Октябрь", "Ноябрь", "Декабрь"); break;
+                }
+
+                var rows = [];
+                reportData.forEach(function(advertising){
+                    rows.push([advertising.advertising, advertising.monthsCounts[0], advertising.monthsCounts[1], advertising.monthsCounts[2]]);
+                })
+                doc.autoTable(columns, rows, {styles: {font: "PTSans"}, margin : { top : 60 }	});
+                let finalY = doc.lastAutoTable.finalY;
+
+                var today = new Date();
+                var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                doc.text("Дата формирования отчета: " + date, 20, finalY + 10);
+
+                doc.text("Отчет сформирован: ", 200, finalY + 10, null, null, "right");
+                doc.text(username, 200, finalY + 20, null, null, "right");
+
+                window.open(URL.createObjectURL(doc.output("blob")))
+
+                $("#toastText").text("Отчет успешно сформирован");
+                $("#myToast").toast("show");
+            },
+            error: function () {
+                $("#toastText").text("Произошла ошибка при формировании отчета");
+                $("#myToast").toast("show");
+            }
+        });
+    }
+</script>
