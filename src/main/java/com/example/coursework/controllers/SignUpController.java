@@ -42,7 +42,7 @@ public class SignUpController {
         if (bindingResult.hasErrors())
             return "sign-up";
 
-        userDto.setRoles(Collections.singleton(Role.Admin));
+        userDto.setRoles(Collections.singleton(Role.User));
         switch (userService.addUser(userDto)) {
             case BadName:
                 model.addAttribute("toast", "Имя пользователя занято");
