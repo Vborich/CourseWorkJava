@@ -11,7 +11,6 @@ import org.apache.commons.codec.binary.Base64;
 
 import java.util.Map;
 
-@Service
 public class CloudinaryService {
 
     public String uploadImage(String image) throws IOException {

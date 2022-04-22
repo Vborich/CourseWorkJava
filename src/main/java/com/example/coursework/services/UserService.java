@@ -31,9 +31,6 @@ public class UserService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private CloudinaryService cloudinaryService;
-
-    @Autowired
     HttpServletRequest httpServletRequest;
 
     private String getContextPath()
@@ -121,7 +118,7 @@ public class UserService implements UserDetailsService {
             return false;
 
         User user = userRepository.findById(id).get();
-        var url = cloudinaryService.uploadImage(image);
+        var url = Cloudinary.getCloudinaryService().uploadImage(image);
         if (url != "")
         {
             user.setAvatarUrl(url);
