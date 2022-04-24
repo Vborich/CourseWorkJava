@@ -25,7 +25,7 @@ public class CompanyService {
         return true;
     }
 
-    public boolean createCompany(Company company, long userId)
+    public boolean createCompanyAsOwner(Company company, long userId)
     {
         Company companyDb = companyRepository.findByCompanyName(company.getCompanyName());
         if (companyDb != null)
@@ -94,14 +94,14 @@ public class CompanyService {
         return StatusEnum.Successfully;
     }
 
-    public boolean setUserOwner(long idCompany, long idUser)
+    public boolean setUserOwnerForCompany(long idCompany, long idUser)
     {
         Company company = getCompanyById(idCompany);
-        User user = userRepository.findById(idUser).get();
-        if (user == null || company == null)
+        var user = userRepository.findById(idUser);
+        if (!user.isPresent() || company == null)
             return false;
 
-        company.setUserOwner(user);
+        company.setUserOwner(user.get());
         companyRepository.save(company);
         return true;
     }

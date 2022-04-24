@@ -2,6 +2,7 @@ package com.example.coursework.mappers;
 
 import com.example.coursework.dto.CompanyDto;
 import com.example.coursework.models.Address;
+import com.example.coursework.models.AddressBuilder.AddressBuilder;
 import com.example.coursework.models.Company;
 
 public class CompanyMapperImp implements CompanyMapper{
@@ -10,8 +11,15 @@ public class CompanyMapperImp implements CompanyMapper{
         if (companyDto == null)
             return null;
         Company company = CompanyMapper.INSTANCE.toModel(companyDto);
-        Address address = new Address(companyDto.getCountry(), companyDto.getCity(),
-                companyDto.getStreet(), companyDto.getBuilding());
+
+        AddressBuilder addressBuilder = new AddressBuilder();
+        addressBuilder.setCountry(companyDto.getCountry());
+        addressBuilder.setCity(companyDto.getCity());
+        addressBuilder.setStreet(companyDto.getStreet());
+        addressBuilder.setBuilding(companyDto.getBuilding());
+
+        Address address = addressBuilder.getResult();
+
         company.setAddress(address);
         address.setCompany(company);
         return company;

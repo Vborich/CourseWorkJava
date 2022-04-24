@@ -113,19 +113,24 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id).get();
     }
 
-    public boolean uploadAvatar(long id, String image) throws IOException {
-        if (!userRepository.existsById(id))
-            return false;
+    public boolean uploadAvatar(long id, String image) {
+        try {
+            if (!userRepository.existsById(id))
+                return false;
 
-        User user = userRepository.findById(id).get();
-        var url = Cloudinary.getCloudinaryService().uploadImage(image);
-        if (url != "")
-        {
-            user.setAvatarUrl(url);
-            userRepository.save(user);
-            return true;
+            User user = userRepository.findById(id).get();
+            var url = Cloudinary.getCloudinaryService().uploadImage(image);
+            if (url != "") {
+                user.setAvatarUrl(url);
+                userRepository.save(user);
+                return true;
+            }
+            return false;
         }
-        return false;
+        catch (Exception ex)
+        {
+            return false;
+        }
     }
 
     public StatusEnum editUser(User user)

@@ -24,6 +24,14 @@ public class Advertising {
     @OneToMany(mappedBy = "advertising", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<AdvertisingSubtype> advertisingSubtypes;
 
+    public Advertising(){}
+
+    public Advertising(String advertisingName, String description, Set<AdvertisingSubtype> advertisingSubtypes) {
+        this.advertisingName = advertisingName;
+        this.description = description;
+        this.advertisingSubtypes = advertisingSubtypes;
+    }
+
     public Long getId() {
         return id;
     }

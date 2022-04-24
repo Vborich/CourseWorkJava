@@ -1,6 +1,7 @@
 package com.example.coursework.models;
 
 import javax.persistence.*;
+import javax.servlet.http.PushBuilder;
 import java.util.Date;
 
 @Entity
@@ -21,6 +22,15 @@ public class Order {
     private int countUnits;
 
     private double totalPrice;
+
+    public Order() {}
+
+    public Order(int status, Date confirmationDate, double totalPrice, AdvertisingSubtype advertisingSubtype) {
+        this.status = status;
+        this.confirmationDate = confirmationDate;
+        this.totalPrice = totalPrice;
+        this.advertisingSubtype = advertisingSubtype;
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id", nullable = false)

@@ -162,7 +162,7 @@ public class CompanyController {
     public String setCompanyOwner(@PathVariable(value = "id") long id, @PathVariable(value = "userId") long userId,
                                   RedirectAttributes redirectAttributes, @AuthenticationPrincipal User user,
                                   Model model) {
-        redirectAttributes.addFlashAttribute("toast", companyService.setUserOwner(id, userId) ?
+        redirectAttributes.addFlashAttribute("toast", companyService.setUserOwnerForCompany(id, userId) ?
                 "Пользователь успешно назначен владельцом компании" : "Произошла ошибка при назначении владельца компании");
         return "redirect:/companies/" + id + (user.getAuthorities()
                 .stream().anyMatch(ga -> ga.getAuthority().equals("User"))  ? "" : "/users");
@@ -206,7 +206,7 @@ public class CompanyController {
         if (bindingResult.hasErrors())
             return "add-company";
 
-        if (!companyService.createCompany(companyMapper.toModel(companyDto), user.getId()))
+        if (!companyService.createCompanyAsOwner(companyMapper.toModel(companyDto), user.getId()))
         {
             model.addAttribute("toast", "Компании с данным именем уже существует");
             return "add-company";
